@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Home(){
+export default function Home() {
 
 const [file,setFile]=useState(null)
 const [result,setResult]=useState("")
@@ -10,7 +10,7 @@ const upload=async()=>{
 const formData=new FormData()
 formData.append("file",file)
 
-const res=await fetch("https://your-backend.onrender.com/analyze",{
+const res=await fetch("https://ai-health-diagnostics-agent-2.onrender.com/analyze",{
 
 method:"POST",
 body:formData
@@ -25,19 +25,25 @@ setResult(data.report)
 
 return(
 
-<div style={{padding:40}}>
+<div style={{padding:40,fontFamily:"Arial"}}>
 
 <h1>AI Health Diagnostics Agent</h1>
 
-<input type="file"
+<input
+type="file"
 onChange={(e)=>setFile(e.target.files[0])}
 />
 
-<button onClick={upload}>
+<button
+onClick={upload}
+style={{marginLeft:10}}
+>
 Analyze
 </button>
 
-<pre>{result}</pre>
+<pre style={{marginTop:30}}>
+{result}
+</pre>
 
 </div>
 
