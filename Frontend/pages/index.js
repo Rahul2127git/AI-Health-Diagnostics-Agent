@@ -25,25 +25,21 @@ setResult(data.report)
 
 return(
 
-<div style={{padding:40,fontFamily:"Arial"}}>
+<div style={{padding:40}}>
 
 <h1>AI Health Diagnostics Agent</h1>
 
-<input
-type="file"
+<input type="file"
 onChange={(e)=>setFile(e.target.files[0])}
 />
 
-<button
-onClick={upload}
-style={{marginLeft:10}}
->
+<button onClick={upload}>
 Analyze
 </button>
 
-<pre style={{marginTop:30}}>
-{result}
-</pre>
+<h3>Result:</h3>
+
+<pre>{result}</pre>
 
 </div>
 
