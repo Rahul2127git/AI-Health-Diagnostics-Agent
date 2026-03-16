@@ -1,79 +1,95 @@
 import { useState } from "react";
 
-export default function Home(){
+export default function Home() {
 
-const [file,setFile]=useState(null)
-const [result,setResult]=useState("")
-const [loading,setLoading]=useState(false)
+const [file, setFile] = useState(null);
+const [result, setResult] = useState("");
+const [loading, setLoading] = useState(false);
 
-const upload=async()=>{
+const upload = async () => {
 
-if(!file){
-alert("Please upload a file")
-return
+```
+if (!file) {
+  alert("Please upload a file first");
+  return;
 }
 
-setLoading(true)
+setLoading(true);
+setResult("");
 
-const formData=new FormData()
-formData.append("file",file)
+const formData = new FormData();
+formData.append("file", file);
 
-try{
+try {
 
-const res=await fetch("https://ai-health-diagnostics-agent-2.onrender.com/analyze",{
-method:"POST",
-body:formData
-})
+  const response = await fetch(
+    "https://ai-health-diagnostics-agent-2.onrender.com/analyze",
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
 
-const data=await res.json()
+  if (!response.ok) {
+    throw new Error("Server error");
+  }
 
-setResult(data.report)
+  const data = await response.json();
+  setResult(data.report);
 
-}catch(err){
+} catch (error) {
 
-setResult("Error connecting to server")
+  console.error(error);
+
+  setResult(
+    "Server may be waking up (Render free tier). Please wait 20 seconds and click Analyze again."
+  );
 
 }
 
-setLoading(false)
+setLoading(false);
+```
 
-}
+};
 
-return(
+return (
 
-<div style={{padding:40,fontFamily:"Arial"}}>
+```
+<div style={{ padding: 40, fontFamily: "Arial" }}>
 
-<h1>AI Health Diagnostics Agent</h1>
+  <h1>AI Health Diagnostics Agent</h1>
 
-<input 
-type="file"
-onChange={(e)=>setFile(e.target.files[0])}
-/>
+  <input
+    type="file"
+    onChange={(e) => setFile(e.target.files[0])}
+  />
 
-<br/><br/>
+  <br /><br />
 
-<button onClick={upload}>
-Analyze
-</button>
+  <button onClick={upload}>
+    Analyze
+  </button>
 
-<br/><br/>
+  <br /><br />
 
-{loading && <p>Analyzing report...</p>}
+  {loading && <p>Analyzing report...</p>}
 
-{result && (
-<div style={{
-background:"#f5f5f5",
-padding:"15px",
-borderRadius:"10px",
-width:"400px"
-}}>
-<h3>Result</h3>
-<pre>{result}</pre>
+  {result && (
+    <div
+      style={{
+        background: "#f5f5f5",
+        padding: "20px",
+        borderRadius: "10px",
+        width: "400px"
+      }}
+    >
+      <h3>Result</h3>
+      <pre>{result}</pre>
+    </div>
+  )}
+
 </div>
-)}
+```
 
-</div>
-
-)
-
+);
 }
